@@ -328,39 +328,69 @@ void InterfaceAggregationFactory<Scalar, LocalOrdinal, GlobalOrdinal, Node>::Bui
       const GlobalOrdinal gDualNodeId   = AmalgamationFactory::DOFGid2NodeId(gDualDofId, dualBlockDim, dualDofOffset, 0);
 
       if (local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId] != -GO_ONE) {
-        GetOStream(Runtime, myRank) << "Problematic entries on proc " << myRank << ":" << std::endl;
-        GetOStream(Runtime, myRank) << "primalBlockDim: " << primalBlockDim << std::endl;
-        GetOStream(Runtime, myRank) << "primalBlockDim: " << primalBlockDim << std::endl;
-        GetOStream(Runtime, myRank) << "primalDofOffset: " << primalDofOffset << std::endl;
-        GetOStream(Runtime, myRank) << "dualDofOffset: " << dualDofOffset << std::endl;
-        GetOStream(Runtime, myRank) << "dualBlockDim: " << dualBlockDim << std::endl;
-        GetOStream(Runtime, myRank) << "primalInterfaceDofRowMap->getIndexBase(): " << primalInterfaceDofRowMap->getIndexBase() << std::endl;
-        GetOStream(Runtime, myRank) << "numDofsPerPrimalNode: " << numDofsPerPrimalNode << std::endl;
-        GetOStream(Runtime, myRank) << "#################" << std::endl;
-
-        GetOStream(Runtime, myRank) << "gPrimalRowId: " << gPrimalRowId << std::endl;
-        GetOStream(Runtime, myRank) << "lPrimalRowId: " << lPrimalRowId << std::endl;
-        GetOStream(Runtime, myRank) << "gPrimalNodeId: " << gPrimalNodeId << std::endl;
-        GetOStream(Runtime, myRank) << "lPrimalNodeId: " << lPrimalNodeId << std::endl;
-        GetOStream(Runtime, myRank) << "primalAggId: " << primalAggId << std::endl;
-        GetOStream(Runtime, myRank) << "gDualDofId: " << gDualDofId << std::endl;
-        GetOStream(Runtime, myRank) << "gDualNodeId: " << gDualDofId << std::endl;
-
-        GetOStream(Runtime, myRank) << "local_dualNodeId2primalNodeId: " << std::endl;
-        for (size_t i = 0; i < local_dualNodeId2primalNodeId.size(); ++i) {
-          GetOStream(Runtime, myRank) << "proc(" << myRank << "):   local_dualNodeId2primalNodeId[" << i << "] = " << local_dualNodeId2primalNodeId[i] << std::endl;
-        }
+        //        GetOStream(Runtime, myRank) << "Problematic entries on proc " << myRank << ":" << std::endl;
+        //        GetOStream(Runtime, myRank) << "primalBlockDim: " << primalBlockDim << std::endl;
+        //        GetOStream(Runtime, myRank) << "primalBlockDim: " << primalBlockDim << std::endl;
+        //        GetOStream(Runtime, myRank) << "primalDofOffset: " << primalDofOffset << std::endl;
+        //        GetOStream(Runtime, myRank) << "dualDofOffset: " << dualDofOffset << std::endl;
+        //        GetOStream(Runtime, myRank) << "dualBlockDim: " << dualBlockDim << std::endl;
+        //        GetOStream(Runtime, myRank) << "primalInterfaceDofRowMap->getIndexBase(): " << primalInterfaceDofRowMap->getIndexBase() << std::endl;
+        //        GetOStream(Runtime, myRank) << "numDofsPerPrimalNode: " << numDofsPerPrimalNode << std::endl;
+        //        GetOStream(Runtime, myRank) << "#################" << std::endl;
+        //
+        //        GetOStream(Runtime, myRank) << "gPrimalRowId: " << gPrimalRowId << std::endl;
+        //        GetOStream(Runtime, myRank) << "lPrimalRowId: " << lPrimalRowId << std::endl;
+        //        GetOStream(Runtime, myRank) << "gPrimalNodeId: " << gPrimalNodeId << std::endl;
+        //        GetOStream(Runtime, myRank) << "lPrimalNodeId: " << lPrimalNodeId << std::endl;
+        //        GetOStream(Runtime, myRank) << "primalAggId: " << primalAggId << std::endl;
+        //        GetOStream(Runtime, myRank) << "gDualDofId: " << gDualDofId << std::endl;
+        //        GetOStream(Runtime, myRank) << "gDualNodeId: " << gDualDofId << std::endl;
+        //
+        //        GetOStream(Runtime, myRank) << "local_dualNodeId2primalNodeId: " << std::endl;
+        //        for (size_t i = 0; i < local_dualNodeId2primalNodeId.size(); ++i) {
+        //          GetOStream(Runtime, myRank) << "proc(" << myRank << "):   local_dualNodeId2primalNodeId[" << i << "] = " << local_dualNodeId2primalNodeId[i] << std::endl;
+        //        }
         //        GetOStream(Runtime) << local_dualNodeId2primalNodeId << std::endl;
-      }
 
-      TEUCHOS_TEST_FOR_EXCEPTION(local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId] != -GO_ONE,
-                                 MueLu::Exceptions::RuntimeError,
-                                 "PROC: " << myRank << " gDualNodeId " << gDualNodeId
-                                          << " is already connected to primal nodeId "
-                                          << local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId]
-                                          << ". This shouldn't be. A possible reason might be: "
-                                             "Check if parallel distribution of primalInterfaceDofRowMap corresponds "
-                                             "to the parallel distribution of subblock matrix A01.");
+        std::string outputString;  // Create a string to store the output
+
+        outputString += "Problematic entries on proc " + std::to_string(myRank) + ":\n";
+        outputString += "primalBlockDim: " + std::to_string(primalBlockDim) + "\n";
+        outputString += "primalBlockDim: " + std::to_string(primalBlockDim) + "\n";
+        outputString += "primalDofOffset: " + std::to_string(primalDofOffset) + "\n";
+        outputString += "dualDofOffset: " + std::to_string(dualDofOffset) + "\n";
+        outputString += "dualBlockDim: " + std::to_string(dualBlockDim) + "\n";
+        outputString += "primalInterfaceDofRowMap->getIndexBase(): " +
+                        std::to_string(primalInterfaceDofRowMap->getIndexBase()) + "\n";
+        outputString += "numDofsPerPrimalNode: " + std::to_string(numDofsPerPrimalNode) + "\n";
+        outputString += "#################\n";
+
+        outputString += "gPrimalRowId: " + std::to_string(gPrimalRowId) + "\n";
+        outputString += "lPrimalRowId: " + std::to_string(lPrimalRowId) + "\n";
+        outputString += "gPrimalNodeId: " + std::to_string(gPrimalNodeId) + "\n";
+        outputString += "lPrimalNodeId: " + std::to_string(lPrimalNodeId) + "\n";
+        outputString += "primalAggId: " + std::to_string(primalAggId) + "\n";
+        outputString += "gDualDofId: " + std::to_string(gDualDofId) + "\n";
+        outputString += "gDualNodeId: " + std::to_string(gDualDofId) + "\n";
+
+        outputString += "local_dualNodeId2primalNodeId:\n";
+        for (size_t i = 0; i < local_dualNodeId2primalNodeId.size(); ++i) {
+          outputString +=
+              "proc(" + std::to_string(myRank) + "): local_dualNodeId2primalNodeId[" + std::to_string(i) + "] = " +
+              std::to_string(local_dualNodeId2primalNodeId[i]) + "\n";
+        }
+
+        TEUCHOS_TEST_FOR_EXCEPTION(local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId] != -GO_ONE,
+                                   MueLu::Exceptions::RuntimeError,
+                                   "PROC: " << myRank << " gDualNodeId " << gDualNodeId
+                                            << " is already connected to primal nodeId "
+                                            << local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId]
+                                            << ". This shouldn't be. A possible reason might be: "
+                                               "Check if parallel distribution of primalInterfaceDofRowMap corresponds "
+                                               "to the parallel distribution of subblock matrix A01."
+                                            << "\n\n"
+                                            << outputString);
+      }
 
       local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId] = gPrimalNodeId;
       local_dualNodeId2primalAggId[gDualNodeId - gMinDualNodeId]  = primalAggId;
