@@ -324,7 +324,7 @@ void InterfaceAggregationFactory<Scalar, LocalOrdinal, GlobalOrdinal, Node>::Bui
       const GlobalOrdinal gPrimalNodeId = AmalgamationFactory::DOFGid2NodeId(gPrimalRowId, primalBlockDim, primalDofOffset, primalInterfaceDofRowMap->getIndexBase());
       const LocalOrdinal lPrimalNodeId  = lPrimalRowId / numDofsPerPrimalNode;
       const LocalOrdinal primalAggId    = primalVertex2AggId[lPrimalNodeId];
-      const GlobalOrdinal gDualDofId    = A01->getDomainMap()->getGlobalElement(r);
+      const GlobalOrdinal gDualDofId    = A01->getRowMap()->getGlobalElement(r);
       const GlobalOrdinal gDualNodeId   = AmalgamationFactory::DOFGid2NodeId(gDualDofId, dualBlockDim, dualDofOffset, 0);
 
       if (local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId] != -GO_ONE) {
@@ -345,40 +345,13 @@ void InterfaceAggregationFactory<Scalar, LocalOrdinal, GlobalOrdinal, Node>::Bui
         GetOStream(Runtime, myRank) << "primalAggId: " << primalAggId << std::endl;
         GetOStream(Runtime, myRank) << "gDualDofId: " << gDualDofId << std::endl;
         GetOStream(Runtime, myRank) << "gDualNodeId: " << gDualDofId << std::endl;
+        GetOStream(Runtime, myRank) << "gMinDualNodeId: " << gMinDualNodeId << std::endl;
 
         GetOStream(Runtime, myRank) << "local_dualNodeId2primalNodeId: " << std::endl;
         for (size_t i = 0; i < local_dualNodeId2primalNodeId.size(); ++i) {
           GetOStream(Runtime, myRank) << "proc(" << myRank << "):   local_dualNodeId2primalNodeId[" << i << "] = " << local_dualNodeId2primalNodeId[i] << std::endl;
         }
         GetOStream(Runtime) << local_dualNodeId2primalNodeId << std::endl;
-
-        //        std::string outputString;  // Create a string to store the output
-        //
-        //        outputString += "Problematic entries on proc " + std::to_string(myRank) + ":\n";
-        //        outputString += "primalBlockDim: " + std::to_string(primalBlockDim) + "\n";
-        //        outputString += "primalBlockDim: " + std::to_string(primalBlockDim) + "\n";
-        //        outputString += "primalDofOffset: " + std::to_string(primalDofOffset) + "\n";
-        //        outputString += "dualDofOffset: " + std::to_string(dualDofOffset) + "\n";
-        //        outputString += "dualBlockDim: " + std::to_string(dualBlockDim) + "\n";
-        //        outputString += "primalInterfaceDofRowMap->getIndexBase(): " +
-        //                        std::to_string(primalInterfaceDofRowMap->getIndexBase()) + "\n";
-        //        outputString += "numDofsPerPrimalNode: " + std::to_string(numDofsPerPrimalNode) + "\n";
-        //        outputString += "#################\n";
-        //
-        //        outputString += "gPrimalRowId: " + std::to_string(gPrimalRowId) + "\n";
-        //        outputString += "lPrimalRowId: " + std::to_string(lPrimalRowId) + "\n";
-        //        outputString += "gPrimalNodeId: " + std::to_string(gPrimalNodeId) + "\n";
-        //        outputString += "lPrimalNodeId: " + std::to_string(lPrimalNodeId) + "\n";
-        //        outputString += "primalAggId: " + std::to_string(primalAggId) + "\n";
-        //        outputString += "gDualDofId: " + std::to_string(gDualDofId) + "\n";
-        //        outputString += "gDualNodeId: " + std::to_string(gDualDofId) + "\n";
-        //
-        //        outputString += "local_dualNodeId2primalNodeId:\n";
-        //        for (size_t i = 0; i < local_dualNodeId2primalNodeId.size(); ++i) {
-        //          outputString +=
-        //              "proc(" + std::to_string(myRank) + "): local_dualNodeId2primalNodeId[" + std::to_string(i) + "] = " +
-        //              std::to_string(local_dualNodeId2primalNodeId[i]) + "\n";
-        //        }
 
         TEUCHOS_TEST_FOR_EXCEPTION(local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId] != -GO_ONE,
                                    MueLu::Exceptions::RuntimeError,
@@ -387,7 +360,7 @@ void InterfaceAggregationFactory<Scalar, LocalOrdinal, GlobalOrdinal, Node>::Bui
                                             << local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId]
                                             << ". This shouldn't be. A possible reason might be: "
                                                "Check if parallel distribution of primalInterfaceDofRowMap corresponds "
-                                               "to the parallel distribution of subblock matrix A01. TestTestTest");
+                                               "to the parallel distribution of subblock matrix A01.");
       }
 
       local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId] = gPrimalNodeId;
