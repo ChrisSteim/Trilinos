@@ -348,7 +348,7 @@ void InterfaceAggregationFactory<Scalar, LocalOrdinal, GlobalOrdinal, Node>::Bui
 
         GetOStream(Runtime) << "local_dualNodeId2primalNodeId: " << std::endl;
         for (size_t i = 0; i < local_dualNodeId2primalNodeId.size(); ++i) {
-          std::cout << "proc(" << myRank << "):   local_dualNodeId2primalNodeId[" << i << "] = " << local_dualNodeId2primalNodeId[i] << std::endl;
+          GetOStream(Runtime) << "proc(" << myRank << "):   local_dualNodeId2primalNodeId[" << i << "] = " << local_dualNodeId2primalNodeId[i] << std::endl;
         }
         //        GetOStream(Runtime) << local_dualNodeId2primalNodeId << std::endl;
       }
