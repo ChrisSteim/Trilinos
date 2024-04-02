@@ -328,27 +328,27 @@ void InterfaceAggregationFactory<Scalar, LocalOrdinal, GlobalOrdinal, Node>::Bui
       const GlobalOrdinal gDualNodeId   = AmalgamationFactory::DOFGid2NodeId(gDualDofId, dualBlockDim, dualDofOffset, 0);
 
       if (local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId] != -GO_ONE) {
-        GetOStream(Runtime) << "Problematic entries on proc " << myRank << ":" << std::endl;
-        GetOStream(Runtime) << "primalBlockDim: " << primalBlockDim << std::endl;
-        GetOStream(Runtime) << "primalBlockDim: " << primalBlockDim << std::endl;
-        GetOStream(Runtime) << "primalDofOffset: " << primalDofOffset << std::endl;
-        GetOStream(Runtime) << "dualDofOffset: " << dualDofOffset << std::endl;
-        GetOStream(Runtime) << "dualBlockDim: " << dualBlockDim << std::endl;
-        GetOStream(Runtime) << "primalInterfaceDofRowMap->getIndexBase(): " << primalInterfaceDofRowMap->getIndexBase() << std::endl;
-        GetOStream(Runtime) << "numDofsPerPrimalNode: " << numDofsPerPrimalNode << std::endl;
-        GetOStream(Runtime) << "#################" << std::endl;
+        GetOStream(Runtime, myRank) << "Problematic entries on proc " << myRank << ":" << std::endl;
+        GetOStream(Runtime, myRank) << "primalBlockDim: " << primalBlockDim << std::endl;
+        GetOStream(Runtime, myRank) << "primalBlockDim: " << primalBlockDim << std::endl;
+        GetOStream(Runtime, myRank) << "primalDofOffset: " << primalDofOffset << std::endl;
+        GetOStream(Runtime, myRank) << "dualDofOffset: " << dualDofOffset << std::endl;
+        GetOStream(Runtime, myRank) << "dualBlockDim: " << dualBlockDim << std::endl;
+        GetOStream(Runtime, myRank) << "primalInterfaceDofRowMap->getIndexBase(): " << primalInterfaceDofRowMap->getIndexBase() << std::endl;
+        GetOStream(Runtime, myRank) << "numDofsPerPrimalNode: " << numDofsPerPrimalNode << std::endl;
+        GetOStream(Runtime, myRank) << "#################" << std::endl;
 
-        GetOStream(Runtime) << "gPrimalRowId: " << gPrimalRowId << std::endl;
-        GetOStream(Runtime) << "lPrimalRowId: " << lPrimalRowId << std::endl;
-        GetOStream(Runtime) << "gPrimalNodeId: " << gPrimalNodeId << std::endl;
-        GetOStream(Runtime) << "lPrimalNodeId: " << lPrimalNodeId << std::endl;
-        GetOStream(Runtime) << "primalAggId: " << primalAggId << std::endl;
-        GetOStream(Runtime) << "gDualDofId: " << gDualDofId << std::endl;
-        GetOStream(Runtime) << "gDualNodeId: " << gDualDofId << std::endl;
+        GetOStream(Runtime, myRank) << "gPrimalRowId: " << gPrimalRowId << std::endl;
+        GetOStream(Runtime, myRank) << "lPrimalRowId: " << lPrimalRowId << std::endl;
+        GetOStream(Runtime, myRank) << "gPrimalNodeId: " << gPrimalNodeId << std::endl;
+        GetOStream(Runtime, myRank) << "lPrimalNodeId: " << lPrimalNodeId << std::endl;
+        GetOStream(Runtime, myRank) << "primalAggId: " << primalAggId << std::endl;
+        GetOStream(Runtime, myRank) << "gDualDofId: " << gDualDofId << std::endl;
+        GetOStream(Runtime, myRank) << "gDualNodeId: " << gDualDofId << std::endl;
 
-        GetOStream(Runtime) << "local_dualNodeId2primalNodeId: " << std::endl;
+        GetOStream(Runtime, myRank) << "local_dualNodeId2primalNodeId: " << std::endl;
         for (size_t i = 0; i < local_dualNodeId2primalNodeId.size(); ++i) {
-          GetOStream(Runtime) << "proc(" << myRank << "):   local_dualNodeId2primalNodeId[" << i << "] = " << local_dualNodeId2primalNodeId[i] << std::endl;
+          GetOStream(Runtime, myRank) << "proc(" << myRank << "):   local_dualNodeId2primalNodeId[" << i << "] = " << local_dualNodeId2primalNodeId[i] << std::endl;
         }
         //        GetOStream(Runtime) << local_dualNodeId2primalNodeId << std::endl;
       }
