@@ -328,15 +328,15 @@ void InterfaceAggregationFactory<Scalar, LocalOrdinal, GlobalOrdinal, Node>::Bui
       const GlobalOrdinal gDualNodeId   = AmalgamationFactory::DOFGid2NodeId(gDualDofId, dualBlockDim, dualDofOffset, 0);
 
       if (local_dualNodeId2primalNodeId[gDualNodeId - gMinDualNodeId] != -GO_ONE) {
-        GetOStream(Runtime, myRank) << "### primalinterfaceDofRowMap: \n"
-                                    << std::endl;
-        primalInterfaceDofRowMap->describe(GetOStream(Runtime), VERB_EXTREME);
-        GetOStream(Runtime, myRank) << "### A01->getDomainMap(): \n"
-                                    << std::endl;
-        A01->getDomainMap()->describe(GetOStream(Runtime), VERB_EXTREME);
-        GetOStream(Runtime, myRank) << "### A01->getColMap(): \n"
-                                    << std::endl;
-        A01->getColMap()->describe(GetOStream(Runtime), VERB_EXTREME);
+        //        GetOStream(Runtime, myRank) << "### primalinterfaceDofRowMap: \n"
+        //                                    << std::endl;
+        //        primalInterfaceDofRowMap->describe(GetOStream(Runtime), VERB_EXTREME);
+        //        GetOStream(Runtime, myRank) << "### A01->getDomainMap(): \n"
+        //                                    << std::endl;
+        //        A01->getDomainMap()->describe(GetOStream(Runtime), VERB_EXTREME);
+        //        GetOStream(Runtime, myRank) << "### A01->getColMap(): \n"
+        //                                    << std::endl;
+        //        A01->getColMap()->describe(GetOStream(Runtime), VERB_EXTREME);
 
         GetOStream(Runtime, myRank) << "Problematic entries on proc " << myRank << ":" << std::endl;
         GetOStream(Runtime, myRank) << "proc(" << myRank << "):   r: " << r << std::endl;
