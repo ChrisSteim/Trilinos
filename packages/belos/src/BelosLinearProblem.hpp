@@ -520,13 +520,15 @@ namespace Belos {
     
     //! Current right-hand side of the linear system.
     Teuchos::RCP<const MV> curB_;
-    
+
+  public:
     //! Initial residual of the linear system.
     Teuchos::RCP<MV> R0_;
    
     //! Preconditioned initial residual of the linear system.
     Teuchos::RCP<MV> PR0_;
 
+  protected:
     //! User-defined initial residual of the linear system
     Teuchos::RCP<const MV> R0_user_;
 
