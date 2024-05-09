@@ -46,6 +46,9 @@
  *  \brief The Belos::BlockGmresSolMgr provides a solver manager for the BlockGmres linear solver.
  */
 
+#include <iostream>
+#include <fstream>
+
 #include "BelosConfigDefs.hpp"
 #include "BelosTypes.hpp"
 
@@ -1010,6 +1013,21 @@ ReturnType BlockGmresSolMgr<ScalarType,MV,OP>::solve() {
         }
       }
 
+      // Open a file stream for writing
+      std::ofstream outFile("res_initial.txt");
+
+      // Redirect std::cout to outFile
+      std::streambuf *coutbuf = std::cout.rdbuf(); // Save old buffer
+      std::cout.rdbuf(outFile.rdbuf()); // Redirect std::cout to outFile
+
+      MVT::MvPrint(*V_0, std::cout);
+
+      // Restore std::cout
+      std::cout.rdbuf(coutbuf);
+
+      // Close the file
+      outFile.close();
+
       // Get a matrix to hold the orthonormalization coefficients.
       Teuchos::RCP<Teuchos::SerialDenseMatrix<int,ScalarType> > z_0 =
         Teuchos::rcp( new Teuchos::SerialDenseMatrix<int,ScalarType>( blockSize_, blockSize_ ) );
@@ -1055,6 +1073,17 @@ ReturnType BlockGmresSolMgr<ScalarType,MV,OP>::solve() {
           else if ( maxIterTest_->getStatus() == Passed ) {
             // we don't have convergence
             isConverged = false;
+
+            auto R_0 = MVT::Clone( *(problem_->getInitPrecResVec()), 1);
+            problem_->computeCurrPrecResVec( &*R_0 );
+            problem_->computeCurrPrecResVec( &*V_0 );
+            // Open a file stream for writing
+            std::ofstream outFile2("res.txt");
+            std::cout.rdbuf(outFile2.rdbuf()); // Redirect std::cout to outFile
+            MVT::MvPrint(*R_0, std::cout);
+            std::cout.rdbuf(coutbuf);         // Restore std::cout
+            outFile2.close();                 // Close the file
+
             break;  // break from while(1){block_gmres_iter->iterate()}
           }
           ////////////////////////////////////////////////////////////////////////////////////
